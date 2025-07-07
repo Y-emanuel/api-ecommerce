@@ -40,3 +40,4 @@ export default class ProductManager {
     return { message: 'Producto eliminado' };
   }
 }
+
