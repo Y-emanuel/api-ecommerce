@@ -1,0 +1,60 @@
+<a href="/products" class="btn btn-link">🏠 Volver al Catálogo</a>
+
+<h1 class="page-title">Productos en Tiempo Real</h1>
+
+<form id="productForm" class="product-form">
+  <input type="text" name="title" placeholder="Título" required class="form-input" />
+  <input type="text" name="description" placeholder="Descripción" required class="form-input" />
+  <input type="number" name="price" placeholder="Precio" required class="form-input" min="0" />
+  <input type="text" name="code" placeholder="Código" required class="form-input" />
+  <input type="number" name="stock" placeholder="Stock" required class="form-input" min="0" />
+  <input type="text" name="category" placeholder="Categoría" required class="form-input" />
+  <button type="submit" class="submit-btn">Agregar Producto</button>
+</form>
+
+<ul id="productsList" class="product-list"></ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const productsList = document.getElementById('productsList');
+  const form = document.getElementById('productForm');
+
+
+  function renderProducts(products) {
+    productsList.innerHTML = '';
+    products.forEach(p => {
+      const li = document.createElement('li');
+      li.className = 'product-item';
+      li.textContent = `${p.title} - $${p.price} - ${p.category}`;
+      productsList.appendChild(li);
+    });
+  }
+
+
+  socket.on('updateProducts', products => {
+    renderProducts(products);
+  });
+
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const productData = {};
+
+    formData.forEach((value, key) => {
+      if (key === 'price' || key === 'stock') {
+        productData[key] = Number(value);
+      } else {
+        productData[key] = value.trim();
+      }
+    });
+
+    socket.emit('newProduct', productData);
+
+    alert('Producto enviado, esperando confirmación...');
+    form.reset();
+  });
+</script>

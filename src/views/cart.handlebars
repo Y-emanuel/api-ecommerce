@@ -1,0 +1,34 @@
+<a href="/" class="btn-link">← Volver al Inicio</a>
+
+<h1 class="page-title">{{title}}</h1>
+
+{{#if products.length}}
+  <table class="cart-table">
+    <thead class="cart-thead">
+      <tr>
+        <th class="cart-th">Producto</th>
+        <th class="cart-th">Precio</th>
+        <th class="cart-th">Cantidad</th>
+        <th class="cart-th">Total</th>
+      </tr>
+    </thead>
+    <tbody class="cart-tbody">
+      {{#each products}}
+        <tr class="cart-tr">
+          <td class="cart-td">{{this.title}}</td>
+          <td class="cart-td">${{this.price}}</td>
+          <td class="cart-td">{{this.quantity}}</td>
+          <td class="cart-td">${{this.total}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+    <tfoot class="cart-tfoot">
+      <tr>
+        <td colspan="3" class="cart-total-label">Total general:</td>
+        <td class="cart-total-value">${{totalCart}}</td>
+      </tr>
+    </tfoot>
+  </table>
+{{else}}
+  <p class="empty-cart-msg">Tu carrito está vacío.</p>
+{{/if}}

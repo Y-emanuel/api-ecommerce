@@ -1,0 +1,56 @@
+<h1 class="page-title">Detalle del Producto</h1>
+
+<div class="product-detail">
+  <h2>{{product.title}}</h2>
+  <p><strong>Descripción:</strong> {{product.description}}</p>
+  <p><strong>Precio:</strong> ${{product.price}}</p>
+  <p><strong>Categoría:</strong> {{product.category}}</p>
+  <p><strong>Stock:</strong> {{product.stock}}</p>
+
+  <form id="addToCartForm">
+    <input
+      type="number"
+      name="quantity"
+      value="1"
+      min="1"
+      max="{{product.stock}}"
+      class="form-input"
+      required
+    />
+    <button type="submit" class="submit-btn">Agregar al carrito</button>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('addToCartForm');
+  const productId = "{{product._id}}";
+  const cartId = "{{cartId}}"; 
+
+  if (!cartId || cartId === 'undefined') {
+    alert('No se encontró carrito activo. Por favor inicia sesión o crea un carrito.');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const quantity = parseInt(form.quantity.value);
+
+    try {
+      const res = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity }),
+      });
+
+      const data = await res.json();
+
+      if (data.status === 'success') {
+        alert('Producto agregado al carrito ✅');
+      } else {
+        alert('❌ ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error agregando al carrito:', error);
+      alert('❌ Error al agregar al carrito');
+    }
+  });
+</script>

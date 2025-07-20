@@ -1,0 +1,32 @@
+<nav class="main-nav" style="margin-bottom: 20px;">
+  <a href="/products" class="nav-link">Catálogo</a> |
+  <a href="/realtimeproducts" class="nav-link">Productos en Tiempo Real</a> |
+  <a href="/cart" class="nav-link">🛒 Ver Carrito</a>
+</nav>
+
+<h1 class="page-title">Catálogo de Productos</h1>
+
+<ul class="product-list">
+  {{#each products}}
+    <li class="product-item">
+      <strong>{{this.title}}</strong><br />
+      Precio: ${{this.price}}<br />
+      Categoría: {{this.category}}<br />
+      Stock: {{this.stock}}<br />
+
+      <a href="/products/{{this._id}}" class="btn btn-secondary">Ver más</a>
+    </li>
+  {{/each}}
+</ul>
+
+<div class="pagination">
+  {{#if hasPrevPage}}
+    <a href="{{prevLink}}" class="page-link">← Anterior</a>
+  {{/if}}
+
+  <span class="page-info">Página {{page}} de {{totalPages}}</span>
+
+  {{#if hasNextPage}}
+    <a href="{{nextLink}}" class="page-link">Siguiente →</a>
+  {{/if}}
+</div>
